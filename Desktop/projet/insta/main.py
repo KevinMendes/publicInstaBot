@@ -1,5 +1,7 @@
+from pyppeteer import launch
 from module.utils import Utils
 from bot.bot import Bot
+import time
 import os
 
 def path(file):
@@ -20,5 +22,6 @@ launchBot = Bot(login, password)
 launchBot.Connexion()
 listOfHashtag = fileParser.parseIni()["HASHTAG"]["list"].split(",")
 launchBot.doThing(listOfHashtag=listOfHashtag, passedPub=passedPub, passedPubUpdate=passedPubUpdate)
+#time.sleep(600)
+launchBot.unSub(passedPub=passedPub, modifyPassedPub=fileParser.modifyPassedPub)
 launchBot.teardown_method()
-
