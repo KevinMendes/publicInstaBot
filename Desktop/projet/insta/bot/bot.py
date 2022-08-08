@@ -91,6 +91,7 @@ class Bot():
 
       #waiter for instabotcontroller
       for link in listOfPost:
+        
         self.driver.get(link)
         like = untilClickableXPATH(self.driver, '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div[1]/div[1]/article/div/div[2]/div/div[2]/section[1]/span[1]/button', 10) #like icon
         like
@@ -153,21 +154,47 @@ class Bot():
       diffDay = int((cD - pD).days)
       if diffDay >= 4 and pub[4] == "Non":
         name = pub[3]
-        self.driver.get(f'https://www.instagram.com/{name}/?hl=fr')
-        untilClickableXPATH(self.driver, '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/header/section/div[1]/div[1]/div/div[2]/button', 10).click()
-        #use javascript selector in selenium
-        time.sleep(2)
-        untilClickableXPATH(self.driver, "//*[text()='Se désabonner']").click()
+        time.sleep(1)
         
+
+         
+        while True:
+          self.driver.get(f'https://www.instagram.com/{name}/?hl=fr')
+
+          try:
+            untilClickableXPATH(self.driver, '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/div/div/h2')
+          except Exception:
+            print("exist")
+          else:
+                break;
+          try:
+            untilClickableXPATH(self.driver, '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/header/section/div[1]/div[1]/div/div[2]/button', 10).click()
+          except Exception:
+            try:
+              untilClickableXPATH(self.driver, '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/header/section/div[1]/div[2]/div/div[2]/button', 10).click()    
+            except Exception:
+              print("no load")
+              continue;
+          try:
+            untilClickableXPATH(self.driver, "//*[text()='Se désabonner']",20).click()
+            print("echec localisation desabonné")
+          except Exception:
+            time.sleep(1)
+            print("fail to locate")
+            continue;
+          else:
+            break;
+            
+
         modifyPassedPub(pub[5])
         print("unsub", pub[3])
-        time.sleep(15)
         self.driver.switch_to.window(self.driver.window_handles[0]) #delete?
-        print(f"{pub[3]} is not followed anymore")
+        print(f"{pub[3]} is not followed anymore. :::: START 5 SECONDS SLEEPING::::")
         unsub+=1
+        time.sleep(5)
       elif diffDay < 4:
         print("fin")
-        break; 
+        break;
       elif unsub ==200:
         print("ended by number of unsub")
         break;

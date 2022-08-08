@@ -35,4 +35,4 @@ class Utils():
                 else:
                     writer.writerow(row)
         os.remove('data/passedPub.csv')
-        os.rename('data/passedPub_temp.csv', 'data/passedPubFile.csv')
+        os.rename('data/passedPub_temp.csv', 'data/passedPub.csv')
